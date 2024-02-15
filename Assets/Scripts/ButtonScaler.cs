@@ -20,13 +20,13 @@ public class ButtonScaler : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("Enter");
+        //Debug.Log("Enter");
         //Se detectar o mouse em cima do objeto, irá fazer uma animação de escala.
         _currentTween = transform.DOScale(_originalScale * finalScale, scaleDuration);
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("Exit");
+        //Debug.Log("Exit");
         _currentTween.Kill(); //Se detectar que o mouse saiu, mata a animação.
         transform.localScale = _originalScale; //Volta a escala original.
     }

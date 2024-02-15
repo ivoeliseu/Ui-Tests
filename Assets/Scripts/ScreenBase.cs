@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 using NaughtyAttributes;
 using DG.Tweening;
@@ -16,7 +17,12 @@ namespace Screens
     public class ScreenBase : MonoBehaviour
     {
         public ScreenType screenType;
+
         public List<Transform> listOfObjects;
+        public List<Typer> listOfPhrases;
+
+        public Image uiBackground;
+
         public bool startHided = false;
 
         [Header("Animation")]
@@ -31,16 +37,16 @@ namespace Screens
             }
         }
         [Button] //NaughtyAttributes;
-        protected virtual void Show() //Chama a função ShowObjects
+        public virtual void Show() //Chama a função ShowObjects
         {
             ShowObjects();
-            Debug.Log("Show");
+            //Debug.Log("Show");
         }
         [Button] //NaughtyAttributes;
-        protected virtual void Hide() //Chama a função HideObjects
+        public virtual void Hide() //Chama a função HideObjects
         {
             HideObjects();
-            Debug.Log("Hide");
+            //Debug.Log("Hide");
         }
 
         private void ForceShowObjects() //Mostra os elementos visuais da lista SEM ANIMAÇÃO
@@ -49,6 +55,8 @@ namespace Screens
         } 
         private void ShowObjects() //Mostra os elementos visuais da lista COM ANIMAÇÃO
         {
+            uiBackground.enabled = true;
+
             //Enquanto i for menor que a contagem da listagem máxima da lista:
             //obj será igual ao index representado por i
             //Ativa ele
@@ -60,10 +68,22 @@ namespace Screens
                 obj.gameObject.SetActive(true);
                 obj.DOScale(0, animationDuration).From().SetDelay(i * delayBetweenObjects);
             }
+
+            Invoke(nameof(StartType), delayBetweenObjects * listOfObjects.Count);
         }
         private void HideObjects() //Esconde os elementos visuais da lista
         {
             listOfObjects.ForEach(i => i.gameObject.SetActive(false));
+            uiBackground.enabled = false;
         } 
+
+        // Função que mostra os textos, e chama a corrotina no script Typer
+        private void StartType()
+        {
+            for (int i = 0; i < listOfPhrases.Count; i++)
+            {
+                listOfPhrases[i].StartType();
+            }
+        }
     }
 }
